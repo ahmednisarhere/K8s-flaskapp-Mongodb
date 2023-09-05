@@ -1,0 +1,22 @@
+version: '3'
+services:
+  flask:
+    build:
+      context: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+     ### Jenkins Pipeline will make sure of it
+     # - ./message.sql:/docker-entrypoint-initdb.d/message.sql   # Mount sql script into container's /docker-entrypoint-initdb.d directory
+      - mongo-data:/etc/mongo  # Mount the volume for MySQL data storage
+
+volumes:
+  mongo-data:
